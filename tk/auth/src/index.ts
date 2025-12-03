@@ -1,8 +1,15 @@
-import { signoutRouter } from ' ./routes/signout';
-import { signupRouter } from ' ./routes/signup';
-
+import { signoutRouter } from './routes/signout';
+import { signupRouter } from './routes/signup';
+import { signinRouter } from './routes/signin';
+import { currentUserRouter} from './routes/current-user';
+import { errorHandler } from './middleware/error-handler';
+import { NotFoundError } from './errors/not-found-error'; 
+//
 import express from 'express';
 import bodyParser from 'body-parser';
+import 'express-async-errors';
+import mongoose from 'mongoose';
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,18 +21,19 @@ app.use(signupRouter);
 app.use(signoutRouter);
 
 app.all('*', async (req,res) => {
-	theow new NotFoundError();
+	throw new NotFoundError();
+	//console.log('Errror');
 });
 
-app.use(errorHandler);
+//app.use(errorHandler);
 
 
-const start = () => {
+const start = async () => {
 	try {
 		await mongoose.connect('mongodb://auth-mongo-srv:27017/auth',{
-			userNewUrlParser: true,
-			userUnifiedTopology: true,
-			uaeCreateIndex: true
+			//userNewUrlParser: true,
+			//userUnifiedTopology: true,
+			//userCreateIndex: true
 		});
 		console.log('connected to Mongodb');
 	} catch(err){
