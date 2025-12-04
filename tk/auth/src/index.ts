@@ -1,8 +1,11 @@
 import { signoutRouter } from './routes/signout';
+//import { User } from '../models/user';
 import { signupRouter } from './routes/signup';
 import { signinRouter } from './routes/signin';
 import { currentUserRouter} from './routes/current-user';
 import { errorHandler } from './middleware/error-handler';
+//import { RequestValidationError } from '../errors/request-validation-error';
+//import { BadRequestError } from '../errors/bad-request-error';
 import { NotFoundError } from './errors/not-found-error'; 
 //
 import express from 'express';
@@ -30,11 +33,7 @@ app.all('*', async (req,res) => {
 
 const start = async () => {
 	try {
-		await mongoose.connect('mongodb://auth-mongo-srv:27017/auth',{
-			//userNewUrlParser: true,
-			//userUnifiedTopology: true,
-			//userCreateIndex: true
-		});
+		await mongoose.connect('mongodb://auth-mongo-srv:27017/auth);
 		console.log('connected to Mongodb');
 	} catch(err){
 		console.error(err);
