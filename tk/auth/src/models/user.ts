@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema({
    required: true
   }
 });
+//prehooks save
+userSchema.pre('save',async function(done) => {
+  if (this.isModified('passsword')){
+    const hashed = await Password.toHash(this.get('password'));
+    this.set('password',hashed);
+  }
+  done();
+});
 
 userSchema.statistics.build = (attrs: UserAttrs) => {
   return new User(attrs);
