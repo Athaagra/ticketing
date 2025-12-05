@@ -1,3 +1,8 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import 'express-async-errors';
+import mongoose from 'mongoose';
+
 import { signoutRouter } from './routes/signout';
 //import { User } from '../models/user';
 import { signupRouter } from './routes/signup';
@@ -10,10 +15,7 @@ import { NotFoundError } from './errors/not-found-error';
 import cookieSession from 'cookie-session';
 //import jwt from jsonwebtoken;
 //
-import express from 'express';
-import bodyParser from 'body-parser';
-import 'express-async-errors';
-import mongoose from 'mongoose';
+
 
 
 const app = express();
@@ -24,7 +26,7 @@ app.use(bodyParser.json());
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signupRouter);
-app.use(signoutRouter);
+//app.use(signoutRouter);
 
 app.all('*', async (req,res) => {
 	throw new NotFoundError();
@@ -32,16 +34,19 @@ app.all('*', async (req,res) => {
 });
 
 //app.use(errorHandler);
-app.use( cookieSession({ signed: false, secure:true
-}));
+app.use( cookieSession({ 
+	signed: false, 
+	secure:true
+})
+);
 
 const start = async () => {
         if (!process.env.JWT_KEY){
-          throw new Error('JWT_KEY must be defined');
+           throw new Error('JWT_KEY must be defined');
         }
 	try {
-		await mongoose.connect('mongodb://auth-mongo-srv:27017/auth);
-		console.log('connected to Mongodb');
+		await mongoose.connect('mongodb+srv://athaagrak:malakas12q@cluster0.mbu7lx9.mongodb.net/');
+                console.log('connected to Mongodb');
 	} catch(err){
 		console.error(err);
 	}

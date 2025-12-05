@@ -1,9 +1,9 @@
 import express, {Request, Response} from 'express';
 import { User } from '../models/user';
 import { body} from 'express-validator';
-import { validateRequest } from '../middlewares/validate-request';
+import { validateRequest } from '../middleware/validate-request';
 import { BadRequestError } from '../errors/bad-request-error';
-import json from jsonwebtoken;
+import jwt from jsonwebtoken;
 
 const router = express.Router();
 
@@ -30,12 +30,12 @@ router.post(
         email: user.email
        }, process.env.JWT_KEY!
       );
-      req.session.jwt = {
-        jwt:userJwt
+      req.session = {
+        jwt: userJwt
       };
-      res.status(201).send(user);
+      res.status(201).send(User);
    }
-)
+);
 
 //router.get('/api/users/signup',(res,req) => {
 //  res.send('Hi there!');
