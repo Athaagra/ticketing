@@ -1,9 +1,10 @@
 import express, {Request, Response} from 'express';
+const session = require("express-session");
 import { User } from '../models/user';
 import { body} from 'express-validator';
 import { validateRequest } from '../middleware/validate-request';
 import { BadRequestError } from '../errors/bad-request-error';
-import jwt from jsonwebtoken;
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -29,6 +30,7 @@ router.post(
         id: user.id,
         email: user.email
        }, process.env.JWT_KEY!
+         //process.env.ACCESS_TOKEN!
       );
       req.session = {
         jwt: userJwt

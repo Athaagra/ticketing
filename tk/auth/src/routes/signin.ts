@@ -33,6 +33,7 @@ router.post('/api/users/signin',[
       email: existingUser.email
     },
     process.env.JWT_KEY!
+    // process.env.ACCESS_TOKEN!
   );
   // Store it on session object 
   req.session = {
