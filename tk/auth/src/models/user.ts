@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { Password } from '../services/password';
 
 // An interface that describes that properties
-// that are required to create a new User
+// that are required to create a new User for the first insert
 interface UserAttrs{
  email: string;
  password: string;
@@ -34,23 +34,20 @@ const userSchema = new mongoose.Schema({
     }
    }
 });
-//prehooks save
-userSchema.pre('save',async function(done) {
-  if (this.isModified('passsword')){
-    const hashed = await Password.toHash(this.get('password'));
-    this.set('password',hashed);
-  }
-  //done();
-});
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
-const User = mongoose.model<any, UserModel>('User', userSchema);
+//prehooks save
+//userSchema.pre('save',async function(done) {
+//  if (this.isModified('passsword')){
+//    const hashed = await Password.toHash(this.get('password'));
+//    this.set('password',hashed);
+//  }
+  //done();
+//});
 
-//const buildUser = ( attrs: UserAttrs) => {
-//  return new User(attrs);
-//};
+const User = mongoose.model<any, UserModel>('User', userSchema);
 
 export { User };

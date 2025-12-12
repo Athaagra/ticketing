@@ -1,8 +1,8 @@
-import express {Request,Response} from 'express';
+import express, { Request,Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { Password } from '../services/password';
 import { User } from '../models/user';
-import { validateRequest } from '../middlewares/validate-request';
+import { validateRequest } from '../middleware/validate-request';
 import { BadRequestError } from '../errors/bad-request-error';
 //import { RequestValidationError} from '../errors/request-validation-error';
 import jwt from 'jsonwebtoken';
@@ -12,7 +12,7 @@ router.post('/api/users/signin',[
   body('email').isEmail().withMessage('Email must be valid'),
   body('password').trim().notEmpty().withMessage('You must supply a password') 
   ],
-  validateRequest,
+  //validateRequest,
   async (res: Response,req: Request) => {
     const {email, password} =req.body;
     const existingUser = await User.findOne({ email });
@@ -23,7 +23,7 @@ router.post('/api/users/signin',[
      existingUser.password,
      password 
   );
-   if (!passwordsMatch){
+   if (!passwordMatch){
     throw new BadRequestError('Invalid Credentials');
   }
   // Generate JWT
@@ -35,11 +35,11 @@ router.post('/api/users/signin',[
     process.env.JWT_KEY!
     // process.env.ACCESS_TOKEN!
   );
-  // Store it on session object 
+   //Store it on session object 
   req.session = {
-    jwt: userJwt
+    jwta: userJwt
   };
-   res.status(200).send(existinguser);
+   res.status(200).send(existingUser);
   }
 );
 
