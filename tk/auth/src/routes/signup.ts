@@ -2,7 +2,7 @@ import express, {Request, Response} from 'express';
 //import session from "express-session";
 import { User } from '../models/user';
 import { body, validationResult } from 'express-validator';
-//import { validateRequest } from '../middleware/validate-request';
+import { validateRequest } from '../middleware/validate-request';
 import { BadRequestError } from '../errors/bad-request-error';
 import jwt from 'jsonwebtoken';
 
@@ -12,11 +12,14 @@ router.post(
   '/api/users/signup',
   [
     body('email').isEmail().withMessage('Email must be valid'),
-    body('password').trim().isLength({ min:4,max:20 }).withMessage('Password must be between 4 and 20 characters')
+    body('password').trim().isLength({ min: 4, max: 20 }).withMessage('Password must be between 4 and 20 characters')
    ],
    //validateRequest,
    async (req: Request, res: Response) => {
-     const { email,password } = req.body;
+     const errors = validationResult(req);
+     console.log('Those are errors',errors);
+     console.log('This is the request body',req.body);
+     const { email, password } = req.body;
      const existingUser = await User.findOne({ email }); 
      //res.send({});
       if (existingUser){
@@ -24,15 +27,15 @@ router.post(
          //return res.send({});
          throw new BadRequestError('Email in use'); 
       }
-      const user = User.build({email, password});
+      const user = User.build({ email, password });
       await user.save();
-      const userJwt = jwt.sign({
-        id: user.id,
-        email: user.email
-       }, process.env.JWT_KEY!
+      //const userJwt = jwt.sign({
+      //  id: user.id,
+      //  email: user.email
+      // }, process.env.JWT_KEY!
          //process.env.ACCESS_TOKEN!
-      );
-      req.session = {jwt: userJwt};
+      //);
+      //req.session = {jwt: userJwt};
 
       res.status(201).send(user);
    }
