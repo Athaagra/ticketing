@@ -4,8 +4,9 @@ import { RequestValidationError} from '../errors/request-validation-error';
 import { body, validationResult } from 'express-validator';
 
 export const validateRequest = (
-  err: Error,
+  //err: Error,
   req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   const errors = validationResult(req);
@@ -13,4 +14,4 @@ export const validateRequest = (
    throw new RequestValidationError(errors.array());
  }
  next();
-}
+};

@@ -23,6 +23,8 @@ dotenv.config({path: path.join(__dirname, '.env')});
 console.log(process.env.JWT_KEY);
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', true);
 app.use(bodyParser.json());
 app.use( 
@@ -45,7 +47,7 @@ app.all('*', async (req,res) => {
 	throw new NotFoundError();
 });
 
-//app.use(errorHandler);
+app.use(errorHandler);
 
 
 const start = async () => {
