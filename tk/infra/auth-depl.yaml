@@ -1,9 +1,37 @@
-containers:
-  - name: auth
-    image: stephengrider/auth
-    env:
-      - name: JWT_KEY
-        valueFrom:
-          secretKeyRef:
-             name: jwt-secret
-             key: JWT_KEY
+apiVersion: v1
+kind: Service
+metadata:
+   name: auth
+spec:
+  replica: 1 
+  selector:
+   matchLabels:
+     app: auth
+  template:
+   metadata:
+       labels:
+         app: auth
+   spec:
+     containers:
+         - name: auth
+           image: optim990/auth
+           env:
+             - name: JWT_KEY
+              valueFrom:
+               secretKeyRef:
+                 name: jwt-secret
+                 key: JWT_KEY
+---
+apiVersion: v1
+kind:Service
+metadata:
+  name: auth-srv
+spec:
+  selector: 
+     app: auth
+  type: authIP
+  posts:
+    - name: auth
+      protocol: TCP
+      port:80
+      targetport:80

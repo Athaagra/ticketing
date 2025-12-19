@@ -6,11 +6,11 @@ import cookieSession from 'cookie-session';
 import dotenv from "dotenv";
 import path from 'path';
 
-//import { signoutRouter } from './routes/signout';
+import { signoutRouter } from './routes/signout';
 //import { RequestValidationError } from '../errors/request-validation-error';
 //import { BadRequestError } from '../errors/bad-request-error';
 //import jwt from jsonwebtoken;
-//import { currentUserRouter} from './routes/current-user';
+import { currentUserRouter} from './routes/current-user';
 
 import { User } from './models/user';
 import { signupRouter } from './routes/signup';
@@ -35,9 +35,9 @@ app.use(
 );
 
 
-//app.use(currentUserRouter);
+app.use(currentUserRouter);
 
-//app.use(signoutRouter);
+app.use(signoutRouter);
 
 app.use(signupRouter);
 app.use(signinRouter);
@@ -51,9 +51,9 @@ app.use(errorHandler);
 
 
 const start = async () => {
-        //if (!process.env.JWT_KEY){
-        //   console.log('JWT_KEY must be defined');
-        //}
+        if (!process.env.JWT_KEY){
+           console.log('JWT_KEY must be defined');
+        }
 	try {
 		await mongoose.connect('mongodb+srv://athaagrak:malakas12q@cluster0.mbu7lx9.mongodb.net/?appName=Cluster0');
                 console.log('connected to Mongodb');
