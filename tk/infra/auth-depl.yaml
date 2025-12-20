@@ -29,9 +29,8 @@ metadata:
 spec:
   selector: 
      app: auth
-  type: authIP
   posts:
     - name: auth
       protocol: TCP
-      port:80
-      targetport:80
+      port: 3000
+      targetport: 3000
