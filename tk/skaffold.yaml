@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta14
+kind: Config
+build:
+  artifacts:
+    - image: optim990/auth
+      context: auth
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+  local:
+    push: false
+manifests:
+  rawYaml:
+    - ./infra/*
+deploy:
+  kubectl: {}
